@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  display: grid;
+  font-family: sans-serif;
+  background-color: aqua;
+  gap: 30px;
+  padding: 20px;
+}
+img {
+  width: 100%;
+}
+
+.main-title {
+  display: grid;
+  justify-content: center;
+}
+.main-subtitle {
+  display: grid;
+  justify-content: center;
+}
+
+.main-section {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: 100px;
+}
+
+.filter-by-category {
+  display: block;
+}
+.food-list-section {
+  display: grid;
+  justify-content: center;
+}
+.food-list-section li {
+  list-style: none;
+}
+.food-img-and-ingridients {
+  display: grid;
+  justify-content: center;
+}
+.food-img-and-ingridients li {
+  list-style: none;
+  color: magenta;
+}
