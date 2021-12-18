@@ -40,11 +40,11 @@ img {
 .food-list-section li {
   list-style: none;
 }
-.food-img-and-ingridients {
+.food-img-and-ingredients {
   display: grid;
   justify-content: center;
 }
-.food-img-and-ingridients li {
+.food-img-and-ingredients li {
   list-style: none;
   color: magenta;
 }
