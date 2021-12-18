@@ -2,7 +2,7 @@
 <!-- *****************WELCOME PAGE*************** -->
 <h1 class="main-title">Feeling Hungry?</h1>
 <h2 class="main-subtitle">Choose what foods you want</h2> */
-
+const welcomePage = document.querySelector('welcome-page')
 const mainTitle = document.createElement("h1");
 mainTitle.setAttribute("class", "main-title");
 mainTitle.textContent = "Feeling Hungry?";
@@ -160,6 +160,7 @@ filterByAreaForm.append(filterByAreaLabel, filterByAreaSelect);
 filterByAreaDiv.append(filterByAreaForm);
 
 mainSection.append(filterByAreaDiv);
+welcomePage.append(mainSection)
 
 //document.body.append(mainSection);
 
