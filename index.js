@@ -1,7 +1,8 @@
 /******************WELCOME PAGE****************/
 
 function renderWelcomePage() {
-  const welcomePage = document.querySelector('.welcome-page')
+  const welcomePage = document.createElement('section')
+  welcomePage.setAttribute('class', 'welcome-page')
   const mainTitle = document.createElement("h1");
   mainTitle.setAttribute("class", "main-title");
   mainTitle.textContent = "Feeling Hungry?";
@@ -113,89 +114,71 @@ function renderWelcomePage() {
 
   document.body.append(welcomePage);
 }
+/****************MAIN PAGE********************/
+function renderMainPage() {
+  const mainPage = document.createElement('section')
+  mainPage.setAttribute('class', 'main-page')
+  const mainTitleMainPage = document.createElement("h1");
+  mainTitleMainPage.setAttribute("class", "main-title");
+  mainTitleMainPage.textContent = `Mmm... Don't they look delicious!!`;
 
-/*
-<!-- ***************MAIN PAGE******************* -->
-    <h1 class="main-title">Mmm... Don't they look delicious!!</h1>
+  const foodListSection = document.createElement("section");
+  foodListSection.setAttribute("class", "food-list-section");
 
-    <section class="food-list-section">
-      <ul>
-        <li>
-          <img
-            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
-            alt="food title"
-          />
-          <p class="food-name">Pilaf me Groshe</p>
-        </li>
-      </ul>
-    </section> */
-// const mainTitleMainPage = document.createElement("h1");
-// mainTitleMainPage.setAttribute("class", "main-title");
-// mainTitleMainPage.textContent = `Mmm... Don't they look delicious!!`;
+  const foodListUl = document.createElement("ul");
+  foodListUl.setAttribute('class', 'food-list')
 
-// const foodListSection = document.createElement("section");
-// foodListSection.setAttribute("class", "food-list-section");
+  const foodListLi = document.createElement("li");
+  foodListLi.setAttribute('class', 'food-list-item')
 
-// const foodListUl = document.createElement("ul");
+  const foodListImg = document.createElement("img");
+  foodListImg.setAttribute("src", "https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk=");
+  foodListImg.setAttribute("alt", "food title");
 
-// const foodListLi = document.createElement("li");
+  const foodName = document.createElement("p");
+  foodName.setAttribute("class", "food-name");
+  foodName.textContent = "Pilaf me Groshe";
+  foodListLi.append(foodListImg, foodName);
+  foodListUl.append(foodListLi);
+  foodListSection.append(foodListUl);
+  mainPage.append(mainTitleMainPage, foodListSection)
+  document.body.append(mainPage)
+}
+// ****************FOOD DETAILS PAGE*****************
+function renderFoodDetails() {
+  const foodDetailsPage = document.createElement('section')
+  foodDetailsPage.setAttribute('class', 'food-details-page')
+  const mainTitleFoodPage = document.createElement("h1");
+  mainTitleFoodPage.setAttribute("class", "main-title");
+  mainTitleFoodPage.textContent = `Lets Cook!!`;
 
-// const foodListImg = document.createElement("img");
-// foodListImg.setAttribute("src", "");
-// foodListImg.setAttribute("alt", "food title");
+  const foodImgAndIngredients = document.createElement("div");
+  foodImgAndIngredients.setAttribute("class", "food-img-and-ingredients");
 
-// const foodName = document.createElement("p");
-// foodName.setAttribute("class", "food-name");
-// foodName.textContent = "Pilaf me Groshe";
-// foodListLi.append(foodListImg, foodName);
-// foodListUl.append(foodListLi);
-// foodListSection.append(foodListUl);
+  const imageOfFood = document.createElement("img");
+  imageOfFood.setAttribute("src", "");
+  imageOfFood.setAttribute("alt", "food image");
 
-/*
-<h1 class="main-title">Let's cook!</h1>
+  const foodPageUl = document.createElement("ul");
+  const foodPageLi = document.createElement("li");
+  foodPageLi.textContent = "Ingredients";
 
-<div class="food-img-and-ingredients">
-  <img
-    src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
-    alt=""
-  />
-  <ul>
-    <li>ingredients</li>
-  </ul>
-</div>
+  foodPageUl.append(foodPageLi);
+  foodImgAndIngredients.append(imageOfFood, foodPageUl);
 
-<div class="written-and-video-instructions">
-  <p class="written-instructions"></p>
-  <iframe class="video-instructions" src="" frameborder="0"></iframe>
-</div>  */
-// const mainTitleFoodPage = document.createElement("h1");
-// mainTitleFoodPage.setAttribute("class", "main-title");
-// mainTitleFoodPage.textContent = `Lets Cook!!`;
+  const writtenAndVideoInstructon = document.createElement("div");
+  writtenAndVideoInstructon.setAttribute("class", "written-and-video-instructions");
+  const writtenInstructions = document.createElement("p");
+  writtenInstructions.setAttribute("class", "written-instructions");
 
-// const foodImgAndIngredients = document.createElement("div");
-// foodImgAndIngredients.setAttribute("class", "food-img-and-ingredients");
+  const videoInstructions = document.createElement("iframe");
+  videoInstructions.setAttribute("class", "video-instructions");
+  videoInstructions.setAttribute("frameborder", "0");
+  videoInstructions.setAttribute('src', '')
 
-// const imageOfFood = document.createElement("img");
-// imageOfFood.setAttribute("src", "");
-// imageOfFood.setAttribute("alt", "");
-
-// const foodPageUl = document.createElement("ul");
-// const foodPageLi = document.createElement("li");
-// foodPageLi.textContent = "Ingredients";
-
-// foodPageUl.append(foodPageLi);
-// foodImgAndIngredients.append(imageOfFood, foodPageUl);
-
-// const writtenAndVideoInstructon = document.createElement("div");
-// writtenAndVideoInstructon.setAttribute(
-//   "class",
-//   "written-and-video-instructions"
-// );
-// const writtenInstructions = document.createElement("p");
-// writtenInstructions.setAttribute("class", "written-instructions");
-
-// const videoInstructions = document.createElement("iframe");
-// videoInstructions.setAttribute("class", "video-instructions");
-// videoInstructions.setAttribute("frameborder", "0");
-
-// writtenAndVideoInstructon.append(writtenInstructions, videoInstructions);
+  writtenAndVideoInstructon.append(writtenInstructions, videoInstructions);
+  foodDetailsPage.append(mainTitleFoodPage,
+    foodImgAndIngredients,
+    writtenAndVideoInstructon)
+  document.body.append(foodDetailsPage)
+}

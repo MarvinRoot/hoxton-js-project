@@ -6,7 +6,8 @@
 
  body {
   display: grid;
-  
+  font-family: 'Anton', sans-serif;
+  font-family: 'Lobster', cursive;
 }
 #filter-by-category,
 #filter-by-area,
@@ -73,9 +74,10 @@ h3 {
   display: grid;
   justify-content: center;
 }
-
+.main-page {
+  display: grid;
+}
 .food-list-section{
-  font-family: sans-serif;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
