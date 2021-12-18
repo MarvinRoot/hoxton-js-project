@@ -12,8 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lobster&display=swap" rel="stylesheet">
   <body>
-    <!-- *****************WELCOME PAGE*************** -->
-    <section class="welcome-page">
+    <!-- <section class="welcome-page">
       <h1 class="main-title">Feeling Hungry?</h1>
       <h2 class="main-subtitle">Choose what foods you want</h2>
 
@@ -25,12 +24,7 @@
             </label>
             <select name="filter-by-category" id="filter-by-category">
               <option value="">Select a type...</option>
-              <!-- ******Examples******
-                  <option value="micro">Vegetarian</option>
-                  <option value="regional">Breakfast</option>
-                  <option value="brewpub">Seafood</option> -->
-              <!-- Take dhe different categories from the api below -->
-              <!-- https://www.themealdb.com/api/json/v1/1/categories.php -->
+              
             </select>
           </form>
         </div>
@@ -42,12 +36,7 @@
             </label>
             <select name="filter-by-ingridients" id="filter-by-ingridients">
               <option value="">Select a type...</option>
-              <!-- ******Examples******
-                  <option value="micro">Eggs</option>
-                  <option value="regional">Beans</option>
-                  <option value="brewpub">Salmon</option> -->
-              <!-- Take dhe different ingridients from the api below -->
-              <!-- https://www.themealdb.com/api/json/v1/1/list.php?i=list -->
+              
             </select>
           </form>
         </div>
@@ -59,25 +48,74 @@
             </label>
             <select name="filter-by-area" id="filter-by-area">
               <option value="">Select an area...</option>
-              <!-- ******Examples******
-                  <option value="micro">Eggs</option>
-                  <option value="regional">Beans</option>
-                  <option value="brewpub">Salmon</option> -->
-              <!-- Take dhe different areas from the api below -->
-              <!-- https://www.themealdb.com/api/json/v1/1/list.php?i=list -->
+              
             </select>
           </form>
         </div>
       </section>
-    </section>
+      <div class="button">
+        <button type="submit" class="submit-btn">Click to view foods</button>
+      </div>
+      
+    </section> -->
+
 
     <!-- ***************MAIN PAGE******************* -->
     <!-- <h1 class="main-title">Mmm... Don't they look delicious!!</h1>
 
     <section class="food-list-section">
-      <ul>
-        <li>
+      <ul class="food-list">
+        <li class="food-list-item">
           <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
+            src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
+            alt="food title"
+          />
+          <p class="food-name">Pilaf me Groshe</p>
+        </li>
+        <li class="food-list-item">
+          <img
+            class="food-list-img"
             src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
             alt="food title"
           />
@@ -87,21 +125,39 @@
     </section> -->
 
     <!-- ****************FOOD DETAILS PAGE***************** -->
-    <!-- <h1 class="main-title">Let's cook!</h1>
+      <!-- <section class="food-details-page">
+        <h1 class="main-title">Let's cook!</h1>
+        <h3>Teriyaki Chicken Casserole</h3>
 
-    <div class="food-img-and-ingridients">
-      <img
-        src="https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk="
-        alt=""
-      />
-      <ul>
-        <li>ingridients</li>
-      </ul>
-    </div>
+        <div class="food-img-and-ingridients">
+          <img
+            src="https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg"
+            alt=""
+          />
+          <ul>
+            <li><strong>Ingridients</strong></li>
+            <li>soy sauce</li>
+            <li>water</li>
+            <li>brown sugar</li>
+            <li>ground ginger</li>
+            <li>minced garlic</li>
+            <li>cornstarch</li>
+            <li>chicken breasts</li>
+            <li>stir-fry vegetables</li>
+            <li>brown rice</li>
+          </ul>
+        </div>
 
-    <div class="written-and-video-instructions">
-      <p class="written-instructions"></p>
-      <iframe class="video-instructions" src="" frameborder="0"></iframe>
-    </div> -->
+        <div class="written-and-video-instructions">
+          <h3>Follow the steps below:</h3>
+          <p class="written-instructions">"Preheat oven to 350° F. Spray a 9x13-inch baking pan with non-stick spray.
+            Combine soy sauce, ½ cup water, brown sugar, ginger and garlic in a small saucepan and cover. Bring to a boil over medium heat. Remove lid and cook for one minute once boiling.
+            Meanwhile, stir together the corn starch and 2 tablespoons of water in a separate dish until smooth. Once sauce is boiling, add mixture to the saucepan and stir to combine. Cook until the sauce starts to thicken then remove from heat.
+            Place the chicken breasts in the prepared pan. Pour one cup of the sauce over top of chicken. Place chicken in oven and bake 35 minutes or until cooked through. Remove from oven and shred chicken in the dish using two forks.
+            *Meanwhile, steam or cook the vegetables according to package directions.
+            Add the cooked vegetables and rice to the casserole dish with the chicken. Add most of the remaining sauce, reserving a bit to drizzle over the top when serving. Gently toss everything together in the casserole dish until combined. Return to oven and cook 15 minutes. Remove from oven and let stand 5 minutes before serving. Drizzle each serving with remaining sauce. Enjoy!"</p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/4aZr5hZXP_s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section> -->
   </body>
 </html>

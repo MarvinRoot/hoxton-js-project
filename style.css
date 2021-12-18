@@ -6,8 +6,7 @@
 
  body {
   display: grid;
-  font-family: 'Anton', sans-serif;
-  font-family: 'Lobster', cursive;
+  
 }
 #filter-by-category,
 #filter-by-area,
@@ -17,8 +16,11 @@
   color: rgb(65, 27, 27);
 }
 .welcome-page {
+  font-family: 'Anton', sans-serif;
+  font-family: 'Lobster', cursive;
   color: rgb(65, 27, 27);
   display: grid;
+  justify-content: center;
   align-content: center;
   background-image: url(./background.jpg);
   background-size: cover;
@@ -41,6 +43,7 @@ img {
   justify-content: center;
   font-size: 30px;
 }
+
 h3 {
   font-size: 20px;
 }
@@ -50,7 +53,19 @@ h3 {
   justify-content: center;
   gap: 100px;
 }
-
+.submit-btn {
+  width: 9rem;
+  border: none;
+  background-color: rgb(65, 27, 27);
+  border-radius: 50px;
+  padding: 1rem;
+  color: beige;
+  cursor: pointer;
+}
+.button {
+  display: grid;
+  justify-content: center;
+}
 .filter-by-category {
   display: block;
 }
@@ -58,15 +73,57 @@ h3 {
   display: grid;
   justify-content: center;
 }
-.food-list-section li {
-  list-style: none;
-}
-.food-img-and-ingredients {
-  display: grid;
-  justify-content: center;
-}
-.food-img-and-ingredients li {
-  list-style: none;
-  color: magenta;
-} 
 
+.food-list-section{
+  font-family: sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.food-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  list-style: none;
+  padding: 1rem;
+  gap: 1rem;
+  justify-items: center;
+}
+
+.food-list-item {
+  width: 200px;
+  position: relative;
+  cursor: pointer;
+}
+
+.food-details-page {
+  font-family: sans-serif;
+  display: grid;
+  gap: 2rem;
+  margin: 1rem;
+}
+
+.food-img-and-ingridients {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.food-img-and-ingridients li {
+  font-size: 20px;
+  margin-bottom: 3px;
+  list-style: none;
+}
+.food-img-and-ingridients img{
+  width: 400px;
+}
+.written-and-video-instructions {
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+}
+.written-instructions {
+  text-align: center;
+  word-spacing: 10px;
+  width: 80ch;
+}
+.written-and-video-instructions {
+  display: grid;
+  grid-auto-flow: row;
+}

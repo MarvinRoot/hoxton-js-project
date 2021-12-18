@@ -160,7 +160,12 @@ filterByAreaForm.append(filterByAreaLabel, filterByAreaSelect);
 filterByAreaDiv.append(filterByAreaForm);
 
 mainSection.append(filterByAreaDiv);
-welcomePage.append(mainSection)
+const buttonDiv = document.createElement('div')
+buttonDiv.setAttribute('class','button')
+const submitButton = document.createElement('button')
+submitButton.setAttribute('class','submit-btn')
+buttonDiv.append(submitButton)
+welcomePage.append(mainSection,buttonDiv)
 
 //document.body.append(mainSection);
 
