@@ -1,5 +1,18 @@
+const state = {
+  foodCategories: [],
+  foodAreas: []
+}
+// get the full list of categories the user can choose
+function getCategories() {
+  return fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
+  .then(resp => resp.json()).then(meal => state.foodCategories.push(meal))
+}
+// get the full list of areas the user can choose
+function getAreas() {
+  return fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
+  .then(resp => resp.json()).then(meal => state.foodAreas.push(meal))
+}
 /******************WELCOME PAGE****************/
-
 function renderWelcomePage() {
   const welcomePage = document.createElement('section')
   welcomePage.setAttribute('class', 'welcome-page')
