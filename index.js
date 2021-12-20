@@ -36,6 +36,14 @@ function listenToFilterByCategory(filterByCategorySelect) {
   state.selectedCategory = filterByCategorySelect.value
   })
 }
+function listenToFoodButton() {
+  document.body.innerHTML = ''
+  renderMainPage()
+}
+function listenToProductLi() {
+  document.body.innerHTML = ''
+  renderFoodDetails()
+}
 // renders the category form list
 function renderCategoryList() {
   const filterByCategoryDiv = document.createElement("div");
@@ -132,6 +140,10 @@ function renderWelcomePage() {
   const submitButton = document.createElement('button')
   submitButton.textContent = 'Click me for food'
   submitButton.setAttribute('class', 'submit-btn')
+  submitButton.addEventListener('click',function() {
+    document.body.innerHTML = ''
+    listenToFoodButton()
+  })
   buttonDiv.append(submitButton)
   mainSection.append(renderAreaList(), renderCategoryList());
   welcomePage.append(mainTitle, mainSubtitle, mainSection, buttonDiv)
@@ -154,19 +166,22 @@ function renderMainPage() {
 
   const foodListLi = document.createElement("li");
   foodListLi.setAttribute('class', 'food-list-item')
+  foodListLi.addEventListener('click', function(){
+    listenToProductLi()
+  })
 
   const foodListImg = document.createElement("img");
   foodListImg.setAttribute("src", "https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk=");
   foodListImg.setAttribute("alt", "food title");
 
-  const foodName = document.createElement("p");
+  const foodName = document.createElement("h2");
   foodName.setAttribute("class", "food-name");
   foodName.textContent = "Pilaf me Groshe";
   foodListLi.append(foodListImg, foodName);
   foodListUl.append(foodListLi);
   foodListSection.append(foodListUl);
   mainPage.append(mainTitleMainPage, foodListSection)
-  document.body.append(mainPage)
+  document.body.append(renderTheHeader(),mainPage)
 }
 // ****************FOOD DETAILS PAGE*****************
 function renderFoodDetails() {
@@ -204,36 +219,36 @@ function renderFoodDetails() {
   foodDetailsPage.append(mainTitleFoodPage,
     foodImgAndIngredients,
     writtenAndVideoInstructon)
-  document.body.append(foodDetailsPage)
+  document.body.append(renderTheHeader(), foodDetailsPage)
 }
 
 function renderTheHeader() {
   const headerOfPage = document.createElement("header");
 
-  const titleOfPage = document.createElement("h1");
-  titleOfPage.textContent = "HOLLIXTON";
+  // const titleOfPage = document.createElement("h1");
+  // titleOfPage.textContent = "HOXTON CHEFS";
 
   const rightElementsOfHeader = document.createElement("div");
   rightElementsOfHeader.setAttribute("class", "right-elements");
 
   const magnifyingGlass = document.createElement("img");
   magnifyingGlass.setAttribute("class", "magnifying-glass");
-  magnifyingGlass.setAttribute("src", "images/foto.svg");
+  magnifyingGlass.setAttribute("src", "https://img.icons8.com/material-outlined/50/000000/search--v1.png");
   magnifyingGlass.setAttribute("alt", "maginfyi");
 
   const signIn = document.createElement("img");
   signIn.setAttribute("class", "signin");
-  signIn.setAttribute("src", "images/foto.svg");
+  signIn.setAttribute("src", "https://img.icons8.com/small/50/000000/gender-neutral-user.png");
   signIn.setAttribute("alt", "maginfyi");
 
   const bagImage = document.createElement("img");
   bagImage.setAttribute("class", "bag-image");
-  bagImage.setAttribute("src", "images/foto.svg");
+  bagImage.setAttribute("src", "https://img.icons8.com/material-outlined/24/000000/shopping-bag--v1.png");
   bagImage.setAttribute("alt", "maginfyi");
 
   rightElementsOfHeader.append(magnifyingGlass, signIn, bagImage);
 
-  headerOfPage.append(titleOfPage, rightElementsOfHeader);
+  headerOfPage.append(rightElementsOfHeader);
   return headerOfPage;
 }
 
