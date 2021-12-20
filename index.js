@@ -1,32 +1,37 @@
 const state = {
   foodCategories: [],
-  foodAreas: []
+  foodAreas: [],
+  selectedArea: null,
+  selectedCategory: null
 }
 // get the full list of categories the user can choose
 function getCategories() {
   return fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
-  .then(resp => resp.json()).then(meal => state.foodCategories.push(meal))
+  .then(resp => resp.json()).then(category =>{
+    for(let i=0;i<13;i++){
+      state.foodCategories.push(category['meals'][i].strCategory)
+    }
+    renderWelcomePage()
+  })
 }
 // get the full list of areas the user can choose
 function getAreas() {
   return fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
-  .then(resp => resp.json()).then(meal => state.foodAreas.push(meal))
+  .then(resp => resp.json()).then(area => {
+    for(let i=0;i<27;i++){
+      state.foodAreas.push(area['meals'][i].strArea)
+    }
+    renderWelcomePage()
+  })
 }
-/******************WELCOME PAGE****************/
-function renderWelcomePage() {
-  const welcomePage = document.createElement('section')
-  welcomePage.setAttribute('class', 'welcome-page')
-  const mainTitle = document.createElement("h1");
-  mainTitle.setAttribute("class", "main-title");
-  mainTitle.textContent = "Feeling Hungry?";
-
-  const mainSubtitle = document.createElement("h2");
-  mainSubtitle.setAttribute("class", "main-subtitle");
-  mainSubtitle.textContent = "Choose what foods you want";
-
-  const mainSection = document.createElement("section");
-  mainSection.setAttribute("class", "main-section");
-
+function listenToFilterByArea(filterByAreaSelect) {
+  filterByAreaSelect.addEventListener('change', function() {
+  state.selectedArea = ''
+  state.selectedArea = filterByAreaSelect.value
+  })
+}
+// renders the category form list
+function renderCategoryList() {
   const filterByCategoryDiv = document.createElement("div");
   filterByCategoryDiv.setAttribute("class", "filter-by-category-div");
 
@@ -46,48 +51,18 @@ function renderWelcomePage() {
   filterByCategorySelect.setAttribute("name", "filter-by-category");
   filterByCategorySelect.setAttribute("id", "filter-by-category");
 
-  const selectTypeOptionCategory = document.createElement("option");
-  selectTypeOptionCategory.setAttribute("value", "");
-  selectTypeOptionCategory.textContent = "Select a type...";
-
-  filterByCategorySelect.append(selectTypeOptionCategory);
+  for(const category of state.foodCategories){
+    const selectTypeOptionCategory = document.createElement("option");
+    selectTypeOptionCategory.setAttribute("value", category);
+    selectTypeOptionCategory.textContent = category;
+    filterByCategorySelect.append(selectTypeOptionCategory);
+  }
   filterByCategoryForm.append(filterByCategoryLabel, filterByCategorySelect);
-
   filterByCategoryDiv.append(filterByCategoryForm);
-
-
-  const filterByIngredientsDiv = document.createElement("div");
-  filterByIngredientsDiv.setAttribute("class", "filter-by-ingredients-div");
-
-  const filterByIngredientsForm = document.createElement("form");
-  filterByIngredientsForm.setAttribute("class", "filter-by-ingredients-form");
-  filterByIngredientsForm.setAttribute("autocomplete", "off");
-
-  const filterByIngredientsLabel = document.createElement("label");
-  filterByIngredientsLabel.setAttribute("for", "filter-by-ingredients");
-
-  const ingredientsH3 = document.createElement("h3");
-  ingredientsH3.textContent = "Ingredients";
-
-  filterByIngredientsLabel.append(ingredientsH3);
-
-  const filterByIngredientsSelect = document.createElement("select");
-  filterByIngredientsSelect.setAttribute("name", "filter-by-ingredients");
-  filterByIngredientsSelect.setAttribute("id", "filter-by-ingredients");
-
-  const selectTypeOptionIngredients = document.createElement("option");
-  selectTypeOptionIngredients.setAttribute("value", "");
-  selectTypeOptionIngredients.textContent = "Select a type...";
-
-  filterByIngredientsSelect.append(selectTypeOptionIngredients);
-  filterByIngredientsForm.append(
-    filterByIngredientsLabel,
-    filterByIngredientsSelect
-  );
-
-  filterByIngredientsDiv.append(filterByIngredientsForm);
-
-
+  return filterByCategoryDiv
+}
+// renders the area form list
+function renderAreaList() {
   const filterByAreaDiv = document.createElement("div");
   filterByAreaDiv.setAttribute("class", "filter-by-area-div");
 
@@ -106,15 +81,38 @@ function renderWelcomePage() {
   const filterByAreaSelect = document.createElement("select");
   filterByAreaSelect.setAttribute("name", "filter-by-area");
   filterByAreaSelect.setAttribute("id", "filter-by-area");
+  listenToFilterByArea(filterByAreaSelect)
 
-  const selectTypeOptionArea = document.createElement("option");
-  selectTypeOptionArea.setAttribute("value", "");
-  selectTypeOptionArea.textContent = "Select an area...";
-
-  filterByAreaSelect.append(selectTypeOptionArea);
+  for(const area of state.foodAreas){
+    const selectTypeOptionArea = document.createElement("option");
+    selectTypeOptionArea.setAttribute("value", area);
+    selectTypeOptionArea.textContent = area;
+    filterByAreaSelect.append(selectTypeOptionArea);
+  }
   filterByAreaForm.append(filterByAreaLabel, filterByAreaSelect);
 
   filterByAreaDiv.append(filterByAreaForm);
+  return filterByAreaDiv
+}
+/******************WELCOME PAGE****************/
+function renderWelcomePage() {
+  document.body.innerHTML=''
+  const welcomePage = document.createElement('section')
+  welcomePage.setAttribute('class', 'welcome-page')
+  const mainTitle = document.createElement("h1");
+  mainTitle.setAttribute("class", "main-title");
+  mainTitle.textContent = "Feeling Hungry?";
+
+  const mainSubtitle = document.createElement("h2");
+  mainSubtitle.setAttribute("class", "main-subtitle");
+  mainSubtitle.textContent = "Choose what foods you want";
+
+  const mainSection = document.createElement("section");
+  mainSection.setAttribute("class", "main-section");
+
+  renderCategoryList()
+
+  renderAreaList()
 
   const buttonDiv = document.createElement('div')
   buttonDiv.setAttribute('class', 'button')
@@ -122,7 +120,7 @@ function renderWelcomePage() {
   submitButton.textContent = 'Click me for food'
   submitButton.setAttribute('class', 'submit-btn')
   buttonDiv.append(submitButton)
-  mainSection.append(filterByAreaDiv, filterByCategoryDiv, filterByIngredientsDiv);
+  mainSection.append(renderAreaList(), renderCategoryList());
   welcomePage.append(mainTitle, mainSubtitle, mainSection, buttonDiv)
 
   document.body.append(welcomePage);
@@ -195,3 +193,6 @@ function renderFoodDetails() {
     writtenAndVideoInstructon)
   document.body.append(foodDetailsPage)
 }
+
+getCategories()
+getAreas()
