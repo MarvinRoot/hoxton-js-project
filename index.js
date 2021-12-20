@@ -30,6 +30,12 @@ function listenToFilterByArea(filterByAreaSelect) {
   state.selectedArea = filterByAreaSelect.value
   })
 }
+function listenToFilterByCategory(filterByCategorySelect) {
+  filterByCategorySelect.addEventListener('change', function() {
+  state.selectedCategory = ''
+  state.selectedCategory = filterByCategorySelect.value
+  })
+}
 // renders the category form list
 function renderCategoryList() {
   const filterByCategoryDiv = document.createElement("div");
@@ -50,6 +56,7 @@ function renderCategoryList() {
   const filterByCategorySelect = document.createElement("select");
   filterByCategorySelect.setAttribute("name", "filter-by-category");
   filterByCategorySelect.setAttribute("id", "filter-by-category");
+  listenToFilterByCategory(filterByCategorySelect)
   const selectCategoryOption = document.createElement('option')
   selectCategoryOption.setAttribute("value", null);
   selectCategoryOption.textContent = 'Select Category';
