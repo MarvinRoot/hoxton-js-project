@@ -9,6 +9,27 @@
   font-family: 'Anton', sans-serif;
   font-family: 'Lobster', cursive;
 }
+header {
+  background-color: rgba(0, 0, 255, 0.6);
+  display: grid;
+  grid-template-columns: auto 200px;
+  position: fixed;
+  width: 100%;
+  gap: 30px;
+  align-content: center;
+
+  padding: 20px;
+}
+
+header .right-elements {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 20px;
+  justify-items: end;
+  align-content: center;
+  place-items: end;
+}
+
 #filter-by-category,
 #filter-by-area,
 #filter-by-ingridients {

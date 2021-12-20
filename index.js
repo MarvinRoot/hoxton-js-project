@@ -30,6 +30,12 @@ function listenToFilterByArea(filterByAreaSelect) {
   state.selectedArea = filterByAreaSelect.value
   })
 }
+function listenToFilterByCategory(filterByCategorySelect) {
+  filterByCategorySelect.addEventListener('change', function() {
+  state.selectedCategory = ''
+  state.selectedCategory = filterByCategorySelect.value
+  })
+}
 // renders the category form list
 function renderCategoryList() {
   const filterByCategoryDiv = document.createElement("div");
@@ -50,7 +56,11 @@ function renderCategoryList() {
   const filterByCategorySelect = document.createElement("select");
   filterByCategorySelect.setAttribute("name", "filter-by-category");
   filterByCategorySelect.setAttribute("id", "filter-by-category");
-
+  listenToFilterByCategory(filterByCategorySelect)
+  const selectCategoryOption = document.createElement('option')
+  selectCategoryOption.setAttribute("value", null);
+  selectCategoryOption.textContent = 'Select Category';
+  filterByCategorySelect.prepend(selectCategoryOption)
   for(const category of state.foodCategories){
     const selectTypeOptionCategory = document.createElement("option");
     selectTypeOptionCategory.setAttribute("value", category);
@@ -82,7 +92,10 @@ function renderAreaList() {
   filterByAreaSelect.setAttribute("name", "filter-by-area");
   filterByAreaSelect.setAttribute("id", "filter-by-area");
   listenToFilterByArea(filterByAreaSelect)
-
+  const selectAreaOption = document.createElement('option')
+  selectAreaOption.setAttribute("value", null);
+  selectAreaOption.textContent = 'Select Area';
+  filterByAreaSelect.prepend(selectAreaOption)
   for(const area of state.foodAreas){
     const selectTypeOptionArea = document.createElement("option");
     selectTypeOptionArea.setAttribute("value", area);
@@ -123,7 +136,7 @@ function renderWelcomePage() {
   mainSection.append(renderAreaList(), renderCategoryList());
   welcomePage.append(mainTitle, mainSubtitle, mainSection, buttonDiv)
 
-  document.body.append(welcomePage);
+  document.body.append(renderTheHeader(), welcomePage);
 }
 /****************MAIN PAGE********************/
 function renderMainPage() {
@@ -192,6 +205,36 @@ function renderFoodDetails() {
     foodImgAndIngredients,
     writtenAndVideoInstructon)
   document.body.append(foodDetailsPage)
+}
+
+function renderTheHeader() {
+  const headerOfPage = document.createElement("header");
+
+  const titleOfPage = document.createElement("h1");
+  titleOfPage.textContent = "HOLLIXTON";
+
+  const rightElementsOfHeader = document.createElement("div");
+  rightElementsOfHeader.setAttribute("class", "right-elements");
+
+  const magnifyingGlass = document.createElement("img");
+  magnifyingGlass.setAttribute("class", "magnifying-glass");
+  magnifyingGlass.setAttribute("src", "images/foto.svg");
+  magnifyingGlass.setAttribute("alt", "maginfyi");
+
+  const signIn = document.createElement("img");
+  signIn.setAttribute("class", "signin");
+  signIn.setAttribute("src", "images/foto.svg");
+  signIn.setAttribute("alt", "maginfyi");
+
+  const bagImage = document.createElement("img");
+  bagImage.setAttribute("class", "bag-image");
+  bagImage.setAttribute("src", "images/foto.svg");
+  bagImage.setAttribute("alt", "maginfyi");
+
+  rightElementsOfHeader.append(magnifyingGlass, signIn, bagImage);
+
+  headerOfPage.append(titleOfPage, rightElementsOfHeader);
+  return headerOfPage;
 }
 
 getCategories()
