@@ -50,7 +50,10 @@ function renderCategoryList() {
   const filterByCategorySelect = document.createElement("select");
   filterByCategorySelect.setAttribute("name", "filter-by-category");
   filterByCategorySelect.setAttribute("id", "filter-by-category");
-
+  const selectCategoryOption = document.createElement('option')
+  selectCategoryOption.setAttribute("value", null);
+  selectCategoryOption.textContent = 'Select Category';
+  filterByCategorySelect.prepend(selectCategoryOption)
   for(const category of state.foodCategories){
     const selectTypeOptionCategory = document.createElement("option");
     selectTypeOptionCategory.setAttribute("value", category);
@@ -82,7 +85,10 @@ function renderAreaList() {
   filterByAreaSelect.setAttribute("name", "filter-by-area");
   filterByAreaSelect.setAttribute("id", "filter-by-area");
   listenToFilterByArea(filterByAreaSelect)
-
+  const selectAreaOption = document.createElement('option')
+  selectAreaOption.setAttribute("value", null);
+  selectAreaOption.textContent = 'Select Area';
+  filterByAreaSelect.prepend(selectAreaOption)
   for(const area of state.foodAreas){
     const selectTypeOptionArea = document.createElement("option");
     selectTypeOptionArea.setAttribute("value", area);
