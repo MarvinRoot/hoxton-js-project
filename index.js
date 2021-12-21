@@ -1,6 +1,7 @@
 const state = {
   foodCategories: [],
   foodAreas: [],
+  selectedPage: 'welcomePage',
   selectedArea: null,
   selectedCategory: null
 }
@@ -11,7 +12,7 @@ function getCategories() {
     for(let i=0;i<13;i++){
       state.foodCategories.push(category['meals'][i].strCategory)
     }
-    renderWelcomePage()
+    render()
   })
 }
 // get the full list of areas the user can choose
@@ -21,7 +22,7 @@ function getAreas() {
     for(let i=0;i<27;i++){
       state.foodAreas.push(area['meals'][i].strArea)
     }
-    renderWelcomePage()
+    render()
   })
 }
 function listenToFilterByArea(filterByAreaSelect) {
@@ -38,11 +39,13 @@ function listenToFilterByCategory(filterByCategorySelect) {
 }
 function listenToFoodButton() {
   document.body.innerHTML = ''
-  renderMainPage()
+  state.selectedPage = 'MainPage'
+  render()
 }
 function listenToProductLi() {
   document.body.innerHTML = ''
-  renderFoodDetails()
+  state.selectedPage = 'FoodDetailsPage'
+  render()
 }
 // renders the category form list
 function renderCategoryList() {
@@ -252,5 +255,17 @@ function renderTheHeader() {
   return headerOfPage;
 }
 
-getCategories()
-getAreas()
+function selectPageToDisplay() {
+  if(state.selectedPage === 'welcomePage') renderWelcomePage()
+  else if(state.selectedPage === 'MainPage') renderMainPage()
+  else if(state.selectedPage === 'FoodDetailsPage') renderFoodDetails()
+}
+function render() {
+  selectPageToDisplay()
+}
+function init() {
+  getCategories()
+  getAreas()
+}
+
+init()
