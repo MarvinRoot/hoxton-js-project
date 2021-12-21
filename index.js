@@ -3,7 +3,39 @@ const state = {
   foodAreas: [],
   selectedPage: 'welcomePage',
   selectedArea: null,
-  selectedCategory: null
+  selectedCategory: null,
+  foodIdsOfSelectedArea: [],
+  foodListByArea: []
+}
+// gets the ids of every food in selected area and pushes to state
+function getIdsOfSelectedArea() {
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${state.selectedArea}`)
+  .then(resp => resp.json()).then(meal => {
+    state.foodIdsOfSelectedArea = []
+    for(let i=0;i<meal['meals'].length;i++){
+      state.foodIdsOfSelectedArea.push(meal['meals'][i].idMeal)
+    }
+    getFoodsOfSelectedArea()
+  })
+}
+// gets every food of the selected area and pushes to state
+function getFoodsOfSelectedArea() {
+  state.foodListByArea = []
+  for(const id of state.foodIdsOfSelectedArea){
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+    .then(resp => resp.json())
+    .then(meal => {
+      state.foodListByArea.push(meal['meals'])
+    })
+  }
+}
+// displays the food list items on the main page
+function getFoodsToDisplay() {
+  let foodsToDisplay = state.foodListByArea
+  foodsToDisplay = foodsToDisplay.filter(food => 
+    state.selectedCategory === food.strCategory
+  )
+  return foodsToDisplay
 }
 // get the full list of categories the user can choose
 function getCategories() {
@@ -25,23 +57,28 @@ function getAreas() {
     render()
   })
 }
+// listens to the area select
 function listenToFilterByArea(filterByAreaSelect) {
   filterByAreaSelect.addEventListener('change', function() {
   state.selectedArea = ''
   state.selectedArea = filterByAreaSelect.value
+  getIdsOfSelectedArea()
   })
 }
+// listens to the category select
 function listenToFilterByCategory(filterByCategorySelect) {
   filterByCategorySelect.addEventListener('change', function() {
   state.selectedCategory = ''
   state.selectedCategory = filterByCategorySelect.value
   })
 }
+// listens to 'Click me for food' button
 function listenToFoodButton() {
   document.body.innerHTML = ''
   state.selectedPage = 'MainPage'
   render()
 }
+// listens to click of a food list element
 function listenToProductLi() {
   document.body.innerHTML = ''
   state.selectedPage = 'FoodDetailsPage'
@@ -166,22 +203,23 @@ function renderMainPage() {
 
   const foodListUl = document.createElement("ul");
   foodListUl.setAttribute('class', 'food-list')
+  for (const food of getFoodsToDisplay()){
+    const foodListLi = document.createElement("li");
+    foodListLi.setAttribute('class', 'food-list-item')
+    foodListLi.addEventListener('click', function(){
+      listenToProductLi()
+    })
 
-  const foodListLi = document.createElement("li");
-  foodListLi.setAttribute('class', 'food-list-item')
-  foodListLi.addEventListener('click', function(){
-    listenToProductLi()
-  })
+    const foodListImg = document.createElement("img");
+    foodListImg.setAttribute("src", food.strMealThumb);
+    foodListImg.setAttribute("alt", "food title");
 
-  const foodListImg = document.createElement("img");
-  foodListImg.setAttribute("src", "https://media.istockphoto.com/photos/food-backgrounds-table-filled-with-large-variety-of-food-picture-id1155240408?k=20&m=1155240408&s=612x612&w=0&h=Zvr3TwVQ-wlfBnvGrgJCtv-_P_LUcIK301rCygnirbk=");
-  foodListImg.setAttribute("alt", "food title");
-
-  const foodName = document.createElement("h2");
-  foodName.setAttribute("class", "food-name");
-  foodName.textContent = "Pilaf me Groshe";
-  foodListLi.append(foodListImg, foodName);
-  foodListUl.append(foodListLi);
+    const foodName = document.createElement("h2");
+    foodName.setAttribute("class", "food-name");
+    foodName.textContent = food.strMeal;
+    foodListLi.append(foodListImg, foodName);
+    foodListUl.append(foodListLi);
+  }
   foodListSection.append(foodListUl);
   mainPage.append(mainTitleMainPage, foodListSection)
   document.body.append(renderTheHeader(),mainPage)
@@ -224,7 +262,7 @@ function renderFoodDetails() {
     writtenAndVideoInstructon)
   document.body.append(renderTheHeader(), foodDetailsPage)
 }
-
+// renders the header
 function renderTheHeader() {
   const headerOfPage = document.createElement("header");
 
@@ -254,7 +292,7 @@ function renderTheHeader() {
   headerOfPage.append(rightElementsOfHeader);
   return headerOfPage;
 }
-
+// selects which page to display
 function selectPageToDisplay() {
   if(state.selectedPage === 'welcomePage') renderWelcomePage()
   else if(state.selectedPage === 'MainPage') renderMainPage()
