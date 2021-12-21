@@ -114,6 +114,21 @@ h3 {
   display: grid;
   gap: 1rem;
 }
+.previous-button {
+  width: 100px;
+  position: absolute;
+  height: 40px;
+  top: 15px;
+  left: 15px;
+  position: fixed;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.back-arrow {
+  height: 40px;
+  width: 50px;
+}
 .main-section {
   display: grid;
   grid-template-columns: auto auto;
@@ -174,4 +189,76 @@ h3 {
 .written-and-video-instructions {
   display: grid;
   grid-auto-flow: row;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+
+  background-color: #0000006e;
+
+  display: grid;
+  place-items: center;
+}
+
+.modal {
+  display: grid;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 2rem 2.5rem;
+  place-items: center;
+  position: relative;
+}
+
+.modal__close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  background: none;
+  border: none;
+  padding: 0.6rem;
+}
+
+.modal__input {
+  border-radius: 50px;
+  border-color: rgb(47, 122, 192);
+  border-width: 1px;
+  margin-top: .7rem;
+  padding: .5rem;
+}
+
+.modal form {
+  display: grid;
+  padding-top: 1rem;
+}
+
+.modal__input.sign-in {
+  margin-bottom: 1rem;
+}
+
+.modal__sign-up {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.modal__sign-up,
+nav button:hover{
+  text-decoration: underline;
+}
+
+nav img:hover{
+  box-shadow: 0px 0px 3px black;
+}
+
+.modal__submit-button {
+  padding: 1rem;
+  border-radius: 50px;
+  border-width: 0;
+  background-color: royalblue;
+  color: white;
+  cursor: pointer;
 }

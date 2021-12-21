@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "firstName": "Marvin",
+      "lastName": "Aliaj",
+      "id": "marvin@mail.com",
+      "password": "marvin",
+      "bag": []
+    },
+    {
+      "firstName": "Visard",
+      "lastName": "Koleci",
+      "id": "visard@email.com",
+      "password": "visard",
+      "bag": []
+    },
+    {
+      "firstName": "Filan",
+      "lastName": "Fisteku",
+      "id": "filan@mail.com",
+      "password": "filan",
+      "bag": []
+    }
+  ]
+}
