@@ -35,7 +35,6 @@ header .right-elements {
   gap: 20px;
   justify-content: end;
   align-content: center;
-  background-color: rgba(255, 220, 165, 0.3)
 }
 
 header img {
@@ -98,7 +97,9 @@ h3 {
 }
 .button {
   display: grid;
+  grid-auto-flow: column;
   justify-content: center;
+  gap: 1rem;
 }
 .filter-by-category {
   display: block;
@@ -177,6 +178,9 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: flex-start;
+}
+.food-page-li-title {
+  font-weight: bold;
 }
 .food-img-and-ingredients li {
   font-size: 20px;

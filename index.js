@@ -13,6 +13,7 @@ const state = {
   user: null,
   bag: {}
 }
+// adds a food to the cooking list
 function addItemToBag() {
   //update state
   state.bag.push(state.selectedFood)
@@ -24,6 +25,15 @@ function addItemToBag() {
       },
       body: JSON.stringify({bag: state.bag})
   }).then(resp => resp.json())
+}
+// removes a food from the cooking list 
+function removeItemFromBag() {
+  // update state
+  state.bag = state.bag.filter(targetFood => state.selectedFood.idMeal !== targetFood.idMeal)
+  // update server
+  return fetch(`http://localhost:3000/user/${state.user.id}`, {
+    method: 'DELETE'
+  })
 }
 // fetch users from the server
 function getUsers() {
@@ -81,10 +91,14 @@ function getFoodsToDisplay() {
       state.selectedCategory === meal.strCategory
     )
   }
+
+  foodsToDisplay = foodsToDisplay.filter(meal =>
+    meal.strMeal.toLowerCase().includes(state.search.toLowerCase()))
+  
   if(state.selectedCategory === null){
     return foodsToDisplay
-  } 
-  
+  }
+
   return foodsToDisplay
 }
 // get the full list of categories the user can choose
@@ -256,6 +270,9 @@ function renderMainPage() {
     document.body.innerHTML = "";
     state.selectedCategory = null
     state.selectedArea = null
+    state.foodIdsOfSelectedArea = []
+    state.foodListByArea = []
+    state.search = ''
     state.selectedPage = "welcomePage";
     render();
   });
@@ -337,21 +354,28 @@ function renderFoodDetails() {
   imageOfFood.setAttribute("alt", "food image");
 
   const foodPageUl = document.createElement("ul");
-  const foodPageLi = document.createElement("li");
-  foodPageLi.textContent = "Ingredients";
+  const foodPageLiTitle = document.createElement("li");
+  foodPageLiTitle.setAttribute('class', 'food-page-li-title')
+  foodPageLiTitle.textContent = "Ingredients";
+  foodPageUl.prepend(foodPageLiTitle)
   for(let i=1;i<21;i++) {
-    console.log(`${state.selectedFood.strIngredient}`+`${i}`)
+    const ingredientKey = 'strIngredient' + i
+    const measurementsKey = 'strMeasure' + i
+    if(state.selectedFood[ingredientKey] !== null && state.selectedFood[ingredientKey].length > 0) {
+      const foodPageLi = document.createElement("li");
+      foodPageLi.textContent = `${state.selectedFood[measurementsKey]}  -  ${state.selectedFood[ingredientKey]}`
+      foodPageUl.append(foodPageLi);
+    }
   }
 
-  foodPageUl.append(foodPageLi);
   foodImgAndIngredients.append(previousPageButton, imageOfFood, foodPageUl);
 
   const buttonDiv = document.createElement('div')
   buttonDiv.setAttribute('class', 'button')
-  const submitButton = document.createElement('button')
-  submitButton.textContent = 'Add to cook list'
-  submitButton.setAttribute('class', 'submit-btn')
-  submitButton.addEventListener('click', function(event) {
+  const addToBagButton = document.createElement('button')
+  addToBagButton.textContent = 'Add to cook list'
+  addToBagButton.setAttribute('class', 'submit-btn')
+  addToBagButton.addEventListener('click', function(event) {
     event.preventDefault()
     if(state.user !== null) addItemToBag()
     else state.selectedModal = 'profile'
@@ -359,7 +383,19 @@ function renderFoodDetails() {
     state.selectedFood = {}
     render()
   })
-  buttonDiv.append(submitButton)
+
+  const removeFromBagButton = document.createElement('button')
+  removeFromBagButton.textContent = 'Remove from cook list'
+  removeFromBagButton.setAttribute('class', 'submit-btn')
+  removeFromBagButton.addEventListener('click', function(event) {
+    event.preventDefault()
+    if(state.user !== null) removeItemFromBag()
+    else state.selectedModal = 'profile'
+    state.selectedPage = 'mainPage'
+    state.selectedFood = {}
+    render()
+  })
+  buttonDiv.append(addToBagButton, removeFromBagButton)
 
   const writtenAndVideoInstructon = document.createElement("div");
   writtenAndVideoInstructon.setAttribute("class", "written-and-video-instructions");
@@ -396,7 +432,7 @@ function renderTheHeader() {
 
   const magnifyingGlass = document.createElement("img");
   magnifyingGlass.setAttribute("class", "magnifying-glass");
-  magnifyingGlass.setAttribute("src", "https://img.icons8.com/material-outlined/50/000000/search--v1.png");
+  magnifyingGlass.setAttribute("src", './header-icons/search-icon.png');
   magnifyingGlass.setAttribute("alt", "maginfyi");
   magnifyingGlass.addEventListener('click', function() {
     state.selectedModal = 'search'
@@ -404,7 +440,7 @@ function renderTheHeader() {
   })
   const signIn = document.createElement("img");
   signIn.setAttribute("class", "signin");
-  signIn.setAttribute("src", "https://img.icons8.com/small/50/000000/gender-neutral-user.png");
+  signIn.setAttribute("src", "./header-icons/profile-icon.png");
   signIn.setAttribute("alt", "maginfyi");
   signIn.addEventListener('click', function() {
     state.selectedModal = 'profile'
@@ -413,7 +449,7 @@ function renderTheHeader() {
 
   const bagImage = document.createElement("img");
   bagImage.setAttribute("class", "bag-image");
-  bagImage.setAttribute("src", "https://img.icons8.com/material-outlined/24/000000/shopping-bag--v1.png");
+  bagImage.setAttribute("src", "./header-icons/cooking-list.png");
   bagImage.setAttribute("alt", "maginfyi");
   bagImage.addEventListener('click', function() {
     state.selectedModal = 'bag'
@@ -454,8 +490,8 @@ function renderSearchModal() {
   searchModalForm.addEventListener('submit', function (event) {
       event.preventDefault()
       state.search = searchModalInput.value
-
       state.selectedModal = ''
+      state.selectedPage = 'mainPage'
       render()
   })
 
@@ -654,6 +690,7 @@ function renderProfileModalWhenSignedIn() {
 
   document.body.append(modalWrapper)
 }
+// renders the modal for cooking list
 function renderBagModal() {
   const modalWrapper = document.createElement('div')
   modalWrapper.setAttribute('class', 'modal-wrapper')
@@ -722,7 +759,8 @@ function selectPageToDisplay() {
 // picks which one of the modals to show
 function renderModal() {
   if (state.selectedModal === '') return
-  if (state.selectedModal === 'search') renderSearchModal()
+  if (state.selectedModal === 'search' && state.selectedArea !== null) renderSearchModal()
+  if (state.selectedModal === 'search' && state.selectedArea === null) alert('Please pick an area')
   if (state.user !== null && state.selectedModal === 'profile') renderProfileModalWhenSignedIn()
   if (state.user == null && state.selectedModal === 'profile') renderProfileModal()
   if (state.user !== null && state.selectedModal === 'bag') renderBagModal()
