@@ -11,6 +11,7 @@
   background-image: url(./bckgrnd.jpg);
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 header {
   background-color: transparent;
@@ -43,8 +44,7 @@ header img {
 }
 
 #filter-by-category,
-#filter-by-area,
-#filter-by-ingridients {
+#filter-by-area{
   border: none;
   background-color: transparent;
   color: rgb(65, 27, 27);
@@ -137,23 +137,25 @@ h3 {
 .main-page h1 {
   justify-content: center;
   font-size: 40px;
-  color: rgb(65, 27, 27);;
+  color: rgb(65, 27, 27);
 }
 .food-list-section{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  color: rgb(32, 15, 15);
 }
-.food-list li{
+.food-list {
   display: grid;
+  align-items: flex-start;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  list-style: none;
   padding: 1rem;
   gap: 1rem;
 }
 
 .food-list-item {
-  width: 200px;
-  position: absolute;
+  display: grid;
+  list-style: none;
+  width: 400px;
   cursor: pointer;
 }
 
@@ -164,17 +166,29 @@ h3 {
   margin: 1rem;
 }
 
-.food-img-and-ingridients {
+.food-details-page .main-title,
+.food-name{
+  font-family: 'Anton', sans-serif;
+  font-family: 'Lobster', cursive;
+  color: rgb(65, 27, 27)
+}
+
+.food-img-and-ingredients {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
 }
-.food-img-and-ingridients li {
+.food-img-and-ingredients li {
   font-size: 20px;
   margin-bottom: 3px;
   list-style: none;
 }
-.food-img-and-ingridients img{
+.food-img-and-ingredients img{
   width: 400px;
+}
+.food-details-page .back-arrow {
+  height: 40px;
+  width: 50px;
 }
 .written-and-video-instructions {
   display: grid;
@@ -185,6 +199,12 @@ h3 {
   text-align: center;
   word-spacing: 10px;
   width: 80ch;
+  font-weight: 600;
+}
+.written-instructions-title {
+  font-family: 'Anton', sans-serif;
+  font-family: 'Lobster', cursive;
+  color: rgb(65, 27, 27)
 }
 .written-and-video-instructions {
   display: grid;
@@ -261,4 +281,21 @@ nav img:hover{
   background-color: royalblue;
   color: white;
   cursor: pointer;
+}
+.bag-items-section {
+  display: grid;
+  gap: 1rem;
+}
+.bag-item{
+  cursor: pointer;
+  border: solid 1px;
+  border-color: rgb(65, 27, 27);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  gap: .5rem;
+}
+.bag-item-img {
+  width: 100px;
+  margin: .2rem;
 }

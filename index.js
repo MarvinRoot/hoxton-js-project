@@ -8,8 +8,22 @@ const state = {
   foodListByArea: [],
   search: '',
   selectedModal: '',
+  selectedFood: {},
   users: [],
-  user: null
+  user: null,
+  bag: {}
+}
+function addItemToBag() {
+  //update state
+  state.bag.push(state.selectedFood)
+  //update server with PATCH
+  return fetch(`http://localhost:3000/users/${state.user.id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({bag: state.bag})
+  }).then(resp => resp.json())
 }
 // fetch users from the server
 function getUsers() {
@@ -55,17 +69,22 @@ function getFoodsOfSelectedArea() {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
     .then(resp => resp.json())
     .then(meal => {
-      state.foodListByArea.push(meal['meals'])
+      state.foodListByArea.push(meal['meals'][0])
     })
   }
 }
 // displays the food list items on the main page
 function getFoodsToDisplay() {
   let foodsToDisplay = state.foodListByArea
-  foodsToDisplay = foodsToDisplay.filter(food =>{
-    console.log(food[0].strCategory, state.selectedCategory === food[0].strCategory);
-    state.selectedCategory === food[0].strCategory
-  })
+  if(state.selectedArea !== null && state.selectedCategory !== null) {
+    foodsToDisplay = foodsToDisplay.filter(meal =>
+      state.selectedCategory === meal.strCategory
+    )
+  }
+  if(state.selectedCategory === null){
+    return foodsToDisplay
+  } 
+  
   return foodsToDisplay
 }
 // get the full list of categories the user can choose
@@ -106,12 +125,15 @@ function listenToFilterByCategory(filterByCategorySelect) {
 // listens to 'Click me for food' button
 function listenToFoodButton() {
   document.body.innerHTML = ''
-  state.selectedPage = 'mainPage'
+  if(state.selectedArea !== null) state.selectedPage = 'mainPage'
+  else alert('You must pick an area')
   render()
 }
 // listens to click of a food list element
-function listenToProductLi() {
+function listenToProductLi(food) {
   document.body.innerHTML = ''
+  state.selectedFood = {}
+  state.selectedFood = food
   state.selectedPage = 'foodDetailsPage'
   render()
 }
@@ -223,6 +245,7 @@ function renderWelcomePage() {
 }
 /****************MAIN PAGE********************/
 function renderMainPage() {
+  document.body.innerHTML = ''
   const mainPage = document.createElement('section')
   mainPage.setAttribute('class', 'main-page')
 
@@ -231,6 +254,8 @@ function renderMainPage() {
 
   previousPageButton.addEventListener("click", function () {
     document.body.innerHTML = "";
+    state.selectedCategory = null
+    state.selectedArea = null
     state.selectedPage = "welcomePage";
     render();
   });
@@ -256,7 +281,7 @@ function renderMainPage() {
     const foodListLi = document.createElement("li");
     foodListLi.setAttribute('class', 'food-list-item')
     foodListLi.addEventListener('click', function(){
-      listenToProductLi()
+      listenToProductLi(food)
     })
 
     const foodListImg = document.createElement("img");
@@ -269,12 +294,13 @@ function renderMainPage() {
     foodListLi.append(foodListImg, foodName);
     foodListUl.append(foodListLi);
   }
-  foodListSection.append(foodListUl);
-  mainPage.append(previousPageButton, mainTitleMainPage, foodListSection)
+  foodListSection.append(previousPageButton, foodListUl);
+  mainPage.append(mainTitleMainPage, foodListSection)
   document.body.append(renderTheHeader(),mainPage)
 }
 // ****************FOOD DETAILS PAGE*****************
 function renderFoodDetails() {
+  document.body.innerHTML = ''
   const foodDetailsPage = document.createElement('section')
   foodDetailsPage.setAttribute('class', 'food-details-page')
   
@@ -283,7 +309,7 @@ function renderFoodDetails() {
 
   previousPageButton.addEventListener("click", function () {
     document.body.innerHTML = "";
-    state.selectedPage = "MainPage";
+    state.selectedPage = "mainPage";
     render();
   });
 
@@ -302,39 +328,68 @@ function renderFoodDetails() {
   const foodImgAndIngredients = document.createElement("div");
   foodImgAndIngredients.setAttribute("class", "food-img-and-ingredients");
 
+  const foodName = document.createElement('h2')
+  foodName.setAttribute('class', 'food-name')
+  foodName.textContent = state.selectedFood.strMeal
+
   const imageOfFood = document.createElement("img");
-  imageOfFood.setAttribute("src", "");
+  imageOfFood.setAttribute("src", state.selectedFood.strMealThumb);
   imageOfFood.setAttribute("alt", "food image");
 
   const foodPageUl = document.createElement("ul");
   const foodPageLi = document.createElement("li");
   foodPageLi.textContent = "Ingredients";
+  for(let i=1;i<21;i++) {
+    console.log(`${state.selectedFood.strIngredient}`+`${i}`)
+  }
 
   foodPageUl.append(foodPageLi);
   foodImgAndIngredients.append(previousPageButton, imageOfFood, foodPageUl);
 
+  const buttonDiv = document.createElement('div')
+  buttonDiv.setAttribute('class', 'button')
+  const submitButton = document.createElement('button')
+  submitButton.textContent = 'Add to cook list'
+  submitButton.setAttribute('class', 'submit-btn')
+  submitButton.addEventListener('click', function(event) {
+    event.preventDefault()
+    if(state.user !== null) addItemToBag()
+    else state.selectedModal = 'profile'
+    state.selectedPage = 'mainPage'
+    state.selectedFood = {}
+    render()
+  })
+  buttonDiv.append(submitButton)
+
   const writtenAndVideoInstructon = document.createElement("div");
   writtenAndVideoInstructon.setAttribute("class", "written-and-video-instructions");
+  const writtenInstructionsTitle = document.createElement('h2')
+  writtenInstructionsTitle.setAttribute('class', 'written-instructions-title')
+  writtenInstructionsTitle.textContent = `Cooking Instructions for ${state.selectedFood.strMeal}`
   const writtenInstructions = document.createElement("p");
   writtenInstructions.setAttribute("class", "written-instructions");
+  writtenInstructions.textContent = state.selectedFood.strInstructions
 
+  const videoInstructionsTitle = document.createElement('h2')
+  videoInstructionsTitle.setAttribute('class', 'written-instructions-title')
+  videoInstructionsTitle.textContent = `Watch the video instructions for ${state.selectedFood.strMeal}`
   const videoInstructions = document.createElement("iframe");
   videoInstructions.setAttribute("class", "video-instructions");
   videoInstructions.setAttribute("frameborder", "0");
-  videoInstructions.setAttribute('src', '')
+  videoInstructions.setAttribute('width', '50%')
+  videoInstructions.setAttribute('height', '315')
+  videoInstructions.setAttribute('src', `https://www.youtube.com/embed/${state.selectedFood.strYoutube.slice(-11)}`)
 
-  writtenAndVideoInstructon.append(writtenInstructions, videoInstructions);
-  foodDetailsPage.append(mainTitleFoodPage,
+  writtenAndVideoInstructon.append(writtenInstructionsTitle, writtenInstructions, videoInstructionsTitle, videoInstructions);
+  foodDetailsPage.append(mainTitleFoodPage,foodName,
     foodImgAndIngredients,
+    buttonDiv,
     writtenAndVideoInstructon)
   document.body.append(renderTheHeader(), foodDetailsPage)
 }
 // renders the header
 function renderTheHeader() {
   const headerOfPage = document.createElement("header");
-
-  // const titleOfPage = document.createElement("h1");
-  // titleOfPage.textContent = "HOXTON CHEFS";
 
   const rightElementsOfHeader = document.createElement("div");
   rightElementsOfHeader.setAttribute("class", "right-elements");
@@ -370,7 +425,7 @@ function renderTheHeader() {
   headerOfPage.append(rightElementsOfHeader);
   return headerOfPage;
 }
-
+// renders the modal for search button
 function renderSearchModal() {
   const modalWrapper = document.createElement('div')
   modalWrapper.setAttribute('class', 'modal-wrapper')
@@ -414,7 +469,7 @@ function renderSearchModal() {
 
   document.body.append(modalWrapper)
 }
-
+// renders the modal to sign up
 function renderProfileModalForSignUp(modalEl, modalWrapper) {
   modalEl.innerHTML = ''
   const closeModalBtn = document.createElement('button')
@@ -483,7 +538,7 @@ function renderProfileModalForSignUp(modalEl, modalWrapper) {
 
   document.body.append(modalWrapper)
 }
-
+// renders the modal for profile button
 function renderProfileModal() {
   const modalWrapper = document.createElement('div')
   modalWrapper.setAttribute('class', 'modal-wrapper')
@@ -512,7 +567,6 @@ function renderProfileModal() {
       const profileModalForm = document.createElement('form')
       profileModalForm.addEventListener('submit', function (event) {
           event.preventDefault()
-          //state.search = searchModalInput.value
 
           state.selectedModal = ''
           render()
@@ -559,7 +613,7 @@ function renderProfileModal() {
 
   document.body.append(modalWrapper)
 }
-
+// renders the modal to log out
 function renderProfileModalWhenSignedIn() {
   const modalWrapper = document.createElement('div')
   modalWrapper.setAttribute('class', 'modal-wrapper')
@@ -600,7 +654,65 @@ function renderProfileModalWhenSignedIn() {
 
   document.body.append(modalWrapper)
 }
+function renderBagModal() {
+  const modalWrapper = document.createElement('div')
+  modalWrapper.setAttribute('class', 'modal-wrapper')
+  modalWrapper.addEventListener('click', function () {
+      state.selectedModal = ''
+      render()
+  })
 
+  const modalEl = document.createElement('div')
+  modalEl.setAttribute('class', 'modal')
+  modalEl.addEventListener('click', function (event) {
+      event.stopPropagation()
+  })
+
+  const closeModalBtn = document.createElement('button')
+  closeModalBtn.setAttribute('class', 'modal__close-btn')
+  closeModalBtn.textContent = 'X'
+  closeModalBtn.addEventListener('click', function () {
+      state.selectedModal = ''
+      render()
+  })
+
+  const searchModalTitle = document.createElement('h2')
+  searchModalTitle.textContent = 'Your Cooking List'
+
+  const bagItemList = document.createElement('section')
+  bagItemList.setAttribute('class', 'bag-items-section')
+  for(const food of state.bag){
+    const bagItem = document.createElement('div')
+    bagItem.setAttribute('class', 'bag-item')
+    bagItem.addEventListener('click',function(event){
+      event.stopPropagation()
+      document.body.innerHTML = ''
+      state.selectedFood = {}
+      state.selectedFood = food
+      state.selectedPage = 'foodDetailsPage'
+      state.selectedModal = ''
+      render()
+    })
+
+    const bagItemImg = document.createElement('img')
+    bagItemImg.setAttribute('class', 'bag-item-img')
+    bagItemImg.setAttribute('src', food.strMealThumb)
+    const bagItemName = document.createElement('p')
+    bagItemName.setAttribute('class', 'bag-item-name')
+    bagItemName.textContent = `Meal Name: ${food.strMeal}`
+    const bagItemId = document.createElement('p')
+    bagItemId.setAttribute('class', 'bag-item-id')
+    bagItemId.textContent = `Meal Id: ${food.idMeal}`
+
+    bagItem.append(bagItemImg, bagItemName, bagItemId)
+    bagItemList.append(bagItem)
+  }
+
+  modalEl.append(closeModalBtn, searchModalTitle, bagItemList)
+  modalWrapper.append(modalEl)
+
+  document.body.append(modalWrapper)
+}
 // selects which page to display
 function selectPageToDisplay() {
   if(state.selectedPage === 'welcomePage') renderWelcomePage()
@@ -613,7 +725,11 @@ function renderModal() {
   if (state.selectedModal === 'search') renderSearchModal()
   if (state.user !== null && state.selectedModal === 'profile') renderProfileModalWhenSignedIn()
   if (state.user == null && state.selectedModal === 'profile') renderProfileModal()
-  
+  if (state.user !== null && state.selectedModal === 'bag') renderBagModal()
+  if (state.user === null && state.selectedModal === 'bag') {
+    alert('Sign in to view bag') 
+    renderProfileModal()
+  }
 }
 function render() {
   selectPageToDisplay()
