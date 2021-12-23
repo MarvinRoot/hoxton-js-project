@@ -292,26 +292,33 @@ function renderMainPage() {
   const foodListSection = document.createElement("section");
   foodListSection.setAttribute("class", "food-list-section");
 
-  const foodListUl = document.createElement("ul");
-  foodListUl.setAttribute('class', 'food-list')
-  for (const food of getFoodsToDisplay()){
-    const foodListLi = document.createElement("li");
-    foodListLi.setAttribute('class', 'food-list-item')
-    foodListLi.addEventListener('click', function(){
-      listenToProductLi(food)
-    })
+  if(getFoodsToDisplay().length > 0) {
+    const foodListUl = document.createElement("ul");
+    foodListUl.setAttribute('class', 'food-list')
+    for (const food of getFoodsToDisplay()){
+      const foodListLi = document.createElement("li");
+      foodListLi.setAttribute('class', 'food-list-item')
+      foodListLi.addEventListener('click', function(){
+        listenToProductLi(food)
+      })
 
-    const foodListImg = document.createElement("img");
-    foodListImg.setAttribute("src", food.strMealThumb);
-    foodListImg.setAttribute("alt", "food title");
+      const foodListImg = document.createElement("img");
+      foodListImg.setAttribute("src", food.strMealThumb);
+      foodListImg.setAttribute("alt", "food title");
 
-    const foodName = document.createElement("h2");
-    foodName.setAttribute("class", "food-name");
-    foodName.textContent = food.strMeal;
-    foodListLi.append(foodListImg, foodName);
-    foodListUl.append(foodListLi);
+      const foodName = document.createElement("h2");
+      foodName.setAttribute("class", "food-name");
+      foodName.textContent = food.strMeal;
+      foodListLi.append(foodListImg, foodName);
+      foodListUl.append(foodListLi);
+    }
+    foodListSection.append(previousPageButton, foodListUl);
+  } else {
+    const noFoodAlert = document.createElement('h2')
+    noFoodAlert.setAttribute('class', 'no-food-alert')
+    noFoodAlert.textContent = 'Sorry no foods found!!\n Go back and choose different options'
+    foodListSection.append(previousPageButton, noFoodAlert);
   }
-  foodListSection.append(previousPageButton, foodListUl);
   mainPage.append(mainTitleMainPage, foodListSection)
   document.body.append(renderTheHeader(),mainPage)
 }
